@@ -1,0 +1,11 @@
+version: '3.5'
+services:
+  mysql: 
+    container_name: medical-center
+    restart: always
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+    ports:
+    - "3306:3306"
