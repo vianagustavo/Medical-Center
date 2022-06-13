@@ -1,9 +1,9 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { DoctorEntity } from './doctor.entity';
+import { DoctorEntity, DoctorSpecialization } from './doctor.entity';
 import { CreateDoctorService } from './createDoctor.service';
-import { SaveDoctorDto } from './dto/save-doctor.dto';
+import { SaveDoctorBodyDto } from './dto/doctor.dto';
 
 describe('MedicsService', () => {
   let createDoctorService: CreateDoctorService;
@@ -36,12 +36,16 @@ describe('MedicsService', () => {
 
   describe('save', () => {
     it('should save a new doctor with success', async () => {
-      const data: SaveDoctorDto = {
+      const data: SaveDoctorBodyDto = {
         name: 'Gustavo Ferreira Viana',
-        cep: 22793810,
+        zipcode: 22793810,
         crm: '123567',
         landlineNumber: 22881861,
         mobileNumber: 984034502,
+        medicalSpecialization: [
+          DoctorSpecialization.ALERGOLOGIA,
+          DoctorSpecialization.ANGIOLOGIA,
+        ],
       };
       const doctorEntityMock = {
         ...data,

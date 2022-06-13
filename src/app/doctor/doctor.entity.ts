@@ -7,11 +7,6 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
-export enum DoctorStatus {
-  ACTIVE = 'ACTIVE',
-  DELETED = 'DELETED',
-}
-
 export enum DoctorSpecialization {
   ALERGOLOGIA = 'ALERGOLOGIA',
   ANGIOLOGIA = 'ANGIOLOGIA',
@@ -45,7 +40,7 @@ export class DoctorEntity {
   mobileNumber: number;
 
   @Column({ nullable: false })
-  cep: number;
+  zipcode: number;
 
   @Column({
     name: 'medical_specialization',
@@ -54,11 +49,20 @@ export class DoctorEntity {
   })
   medicalSpecialization: DoctorSpecialization[];
 
-  @Column({ default: DoctorStatus.ACTIVE })
-  status: DoctorStatus;
-
-  @Column({ nullable: true })
+  @Column({ nullable: false })
   address: string;
+
+  @Column({ nullable: false })
+  district: string;
+
+  @Column({ nullable: false })
+  city: string;
+
+  @Column({ nullable: false })
+  complement: string;
+
+  @Column({ nullable: false })
+  state: string;
 
   @CreateDateColumn({ name: 'created_at' })
   createdAt: string;

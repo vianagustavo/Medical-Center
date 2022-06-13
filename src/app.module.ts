@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { DoctorEntity } from './app/doctor/doctor.entity';
 import { DoctorModule } from './app/doctor/doctor.module';
+import { HttpModule } from '@nestjs/axios';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { DoctorModule } from './app/doctor/doctor.module';
       synchronize: true,
     }),
     DoctorModule,
+    HttpModule,
   ],
   controllers: [],
   providers: [],
