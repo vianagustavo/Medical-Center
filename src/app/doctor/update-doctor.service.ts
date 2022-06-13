@@ -4,7 +4,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { ViaCepIntegration } from 'src/integrations/viacep';
 import { Repository, UpdateResult } from 'typeorm';
 import { DoctorEntity } from './doctor.entity';
-import { ISaveDoctorDataDto, UpdateDoctorDataDto } from './dto/doctor.dto';
+import { SaveDoctorDataDto, UpdateDoctorDataDto } from './dto/doctor.dto';
 
 @Injectable()
 export class UpdateDoctorService {
@@ -15,17 +15,17 @@ export class UpdateDoctorService {
   ) {}
 
   async update(id: string, data: UpdateDoctorDataDto): Promise<UpdateResult> {
-    try {
-      await this.doctorRepository.findOneOrFail({ where: { id } });
-    } catch (error) {
-      throw new NotFoundException(error.message);
+    const doctor = await this.doctorRepository.findOne({ where: { id } });
+
+    if (!doctor) {
+      throw new NotFoundException('Doctor not found');
     }
     if (data.zipcode === undefined) {
       return await this.doctorRepository.update({ id }, data);
     }
     const viaCepClient = new ViaCepIntegration(this.httpService);
     const zipCodeInfo = await viaCepClient.getAddressInfo(data.zipcode);
-    const info: ISaveDoctorDataDto = {
+    const info: SaveDoctorDataDto = {
       name: data.name,
       crm: data.crm,
       medicalSpecialization: data.medicalSpecialization,

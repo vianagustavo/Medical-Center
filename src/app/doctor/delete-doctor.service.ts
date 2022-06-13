@@ -11,10 +11,10 @@ export class DeleteDoctorService {
   ) {}
 
   async delete(id: string): Promise<void> {
-    try {
-      await this.doctorRepository.findOneOrFail({ where: { id } });
-    } catch (error) {
-      throw new NotFoundException(error.message);
+    const doctor = await this.doctorRepository.findOne({ where: { id } });
+
+    if (!doctor) {
+      throw new NotFoundException('Doctor not found');
     }
     await this.doctorRepository.softDelete(id);
   }
