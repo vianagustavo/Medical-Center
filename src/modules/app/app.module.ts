@@ -3,6 +3,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { DoctorEntity } from '../doctor/entities/doctor.entity';
 import { DoctorModule } from '../doctor/doctor.module';
 import { HttpModule } from '@nestjs/axios';
+import { ConfigModule } from '@nestjs/config';
+import { CepModule } from '../cep/cep.module';
 
 @Module({
   imports: [
@@ -18,6 +20,10 @@ import { HttpModule } from '@nestjs/axios';
     }),
     DoctorModule,
     HttpModule,
+    CepModule,
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
   ],
   controllers: [],
   providers: [],

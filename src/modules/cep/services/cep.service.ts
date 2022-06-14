@@ -1,6 +1,6 @@
-import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
 import { lastValueFrom } from 'rxjs';
+import { ViaCepService } from './viacep.service';
 
 export interface IAddressInfo {
   cep: string;
@@ -12,12 +12,12 @@ export interface IAddressInfo {
 }
 
 @Injectable()
-export class ViaCepIntegration {
-  constructor(private httpService: HttpService) {}
+export class CepIntegrationService {
+  constructor(private viaCepService: ViaCepService) {}
 
   async getAddressInfo(zipcode: number): Promise<IAddressInfo> {
     const response = await lastValueFrom(
-      this.httpService.get(`https://viacep.com.br/ws/${zipcode}/json/`),
+      this.viaCepService.httpService.get(`${zipcode}/json/`),
     );
 
     return response.data;
