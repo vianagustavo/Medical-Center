@@ -1,18 +1,18 @@
 import { HttpService } from '@nestjs/axios';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ViaCepIntegration } from 'src/integrations/viacep';
 import { UpdateResult } from 'typeorm';
 import { DoctorEntity } from '../entities/doctor.entity';
 import { SaveDoctorDataDto, UpdateDoctorDataDto } from '../dto/doctor.dto';
 import { DoctorsRepository } from '../repositories/DoctorRepository';
+import { CepIntegrationService } from 'src/modules/cep/services/cep.service';
 
 @Injectable()
 export class UpdateDoctorService {
   constructor(
     @InjectRepository(DoctorEntity)
     private readonly doctorRepository: DoctorsRepository,
-    private httpService: HttpService,
+    private readonly cepService: CepIntegrationService,
   ) {}
 
   async update(id: string, data: UpdateDoctorDataDto): Promise<UpdateResult> {
@@ -24,8 +24,7 @@ export class UpdateDoctorService {
     if (data.zipcode === undefined) {
       return await this.doctorRepository.update({ id }, data);
     }
-    const viaCepClient = new ViaCepIntegration(this.httpService);
-    const zipCodeInfo = await viaCepClient.getAddressInfo(data.zipcode);
+    const zipCodeInfo = await this.cepService.getAddressInfo(data.zipcode);
     const info: SaveDoctorDataDto = {
       name: data.name,
       crm: data.crm,

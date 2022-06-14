@@ -1,17 +1,17 @@
 import { HttpService } from '@nestjs/axios';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ViaCepIntegration } from 'src/integrations/viacep';
 import { DoctorEntity } from '../entities/doctor.entity';
 import { SaveDoctorBodyDto, SaveDoctorDataDto } from '../dto/doctor.dto';
 import { DoctorsRepository } from '../repositories/DoctorRepository';
+import { CepIntegrationService } from 'src/modules/cep/services/cep.service';
 
 @Injectable()
 export class CreateDoctorService {
   constructor(
     @InjectRepository(DoctorEntity)
     private readonly doctorRepository: DoctorsRepository,
-    private httpService: HttpService,
+    private readonly cepService: CepIntegrationService,
   ) {}
 
   async save(data: SaveDoctorBodyDto): Promise<DoctorEntity> {
@@ -22,8 +22,7 @@ export class CreateDoctorService {
     if (doctor) {
       throw new BadRequestException('Doctor is already registered');
     }
-    const viaCepClient = new ViaCepIntegration(this.httpService);
-    const zipCodeInfo = await viaCepClient.getAddressInfo(data.zipcode);
+    const zipCodeInfo = await this.cepService.getAddressInfo(data.zipcode);
     const info: SaveDoctorDataDto = {
       name: data.name,
       crm: data.crm,
