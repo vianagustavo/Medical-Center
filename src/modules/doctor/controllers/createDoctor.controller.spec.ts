@@ -1,8 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { CreateDoctorController } from './createDoctor.controller';
-import { CreateDoctorService } from './createDoctor.service';
-import { DoctorEntity, DoctorSpecialization } from './doctor.entity';
-import { SaveDoctorBodyDto } from './dto/doctor.dto';
+import { DoctorEntity, DoctorSpecialization } from '../entities/doctor.entity';
+import { SaveDoctorBodyDto } from '../dto/doctor.dto';
+import { CreateDoctorService } from '../services/createDoctor.service';
 
 describe('DoctorsController', () => {
   let createDoctorController: CreateDoctorController;

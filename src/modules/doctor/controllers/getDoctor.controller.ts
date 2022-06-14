@@ -1,7 +1,7 @@
 import { Controller, Get, Query } from '@nestjs/common';
-import { GetDoctorService } from './getDoctor.service';
+import { GetDoctorService } from '../services/getDoctor.service';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
-import { GetDoctorFilters, SaveDoctorBodyDto } from './dto/doctor.dto';
+import { GetDoctorFilters, SaveDoctorBodyDto } from '../dto/doctor.dto';
 
 @Controller('doctors')
 @ApiTags('doctors')

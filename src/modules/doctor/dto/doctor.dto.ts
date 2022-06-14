@@ -5,7 +5,7 @@ import {
   IsOptional,
   MaxLength,
 } from 'class-validator';
-import { DoctorSpecialization } from '../doctor.entity';
+import { DoctorSpecialization } from '../entities/doctor.entity';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 export class SaveDoctorDataDto {

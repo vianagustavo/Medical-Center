@@ -1,27 +1,26 @@
 import { HttpService } from '@nestjs/axios';
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ViaCepIntegration } from 'src/integrations/viacep';
-import { Repository, UpdateResult } from 'typeorm';
-import { DoctorEntity } from './doctor.entity';
-import { SaveDoctorDataDto, UpdateDoctorDataDto } from './dto/doctor.dto';
+import { DoctorEntity } from '../entities/doctor.entity';
+import { SaveDoctorBodyDto, SaveDoctorDataDto } from '../dto/doctor.dto';
+import { DoctorsRepository } from '../repositories/DoctorRepository';
 
 @Injectable()
-export class UpdateDoctorService {
+export class CreateDoctorService {
   constructor(
     @InjectRepository(DoctorEntity)
-    private readonly doctorRepository: Repository<DoctorEntity>,
+    private readonly doctorRepository: DoctorsRepository,
     private httpService: HttpService,
   ) {}
 
-  async update(id: string, data: UpdateDoctorDataDto): Promise<UpdateResult> {
-    const doctor = await this.doctorRepository.findOne({ where: { id } });
+  async save(data: SaveDoctorBodyDto): Promise<DoctorEntity> {
+    const doctor = await this.doctorRepository.findOne({
+      where: { name: data.name, crm: data.crm },
+    });
 
-    if (!doctor) {
-      throw new NotFoundException('Doctor not found');
-    }
-    if (data.zipcode === undefined) {
-      return await this.doctorRepository.update({ id }, data);
+    if (doctor) {
+      throw new BadRequestException('Doctor is already registered');
     }
     const viaCepClient = new ViaCepIntegration(this.httpService);
     const zipCodeInfo = await viaCepClient.getAddressInfo(data.zipcode);
@@ -38,6 +37,7 @@ export class UpdateDoctorService {
       district: zipCodeInfo.bairro,
       state: zipCodeInfo.uf,
     };
-    return await this.doctorRepository.update({ id }, info);
+
+    return this.doctorRepository.save(this.doctorRepository.create(info));
   }
 }

@@ -1,7 +1,7 @@
 import { Body, Controller, Post } from '@nestjs/common';
-import { CreateDoctorService } from './createDoctor.service';
-import { SaveDoctorBodyDto, SaveDoctorDataDto } from './dto/doctor.dto';
+import { SaveDoctorBodyDto, SaveDoctorDataDto } from '../dto/doctor.dto';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { CreateDoctorService } from '../services/createDoctor.service';
 
 @Controller('doctors')
 @ApiTags('doctors')

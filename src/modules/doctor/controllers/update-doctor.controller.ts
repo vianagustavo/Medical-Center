@@ -1,7 +1,7 @@
 import { Body, Controller, Param, ParseUUIDPipe, Put } from '@nestjs/common';
-import { UpdateDoctorDataDto } from './dto/doctor.dto';
-import { UpdateDoctorService } from './update-doctor.service';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { UpdateDoctorDataDto } from '../dto/doctor.dto';
+import { UpdateDoctorService } from '../services/update-doctor.service';
 
 @Controller('doctors')
 @ApiTags('doctors')

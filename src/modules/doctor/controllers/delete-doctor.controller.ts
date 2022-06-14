@@ -1,6 +1,6 @@
 import { Controller, Delete, Param, ParseUUIDPipe } from '@nestjs/common';
-import { DeleteDoctorService } from './delete-doctor.service';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { DeleteDoctorService } from '../services/delete-doctor.service';
 
 @Controller('doctors')
 @ApiTags('doctors')

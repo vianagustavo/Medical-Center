@@ -1,14 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { DoctorEntity } from './doctor.entity';
-import { GetDoctorFilters } from './dto/doctor.dto';
+import { DoctorEntity } from '../entities/doctor.entity';
+import { GetDoctorFilters } from '../dto/doctor.dto';
+import { DoctorsRepository } from '../repositories/DoctorRepository';
 
 @Injectable()
 export class GetDoctorService {
   constructor(
     @InjectRepository(DoctorEntity)
-    private readonly doctorRepository: Repository<DoctorEntity>,
+    private readonly doctorRepository: DoctorsRepository,
   ) {}
 
   async getDoctors(filters: GetDoctorFilters): Promise<DoctorEntity[]> {

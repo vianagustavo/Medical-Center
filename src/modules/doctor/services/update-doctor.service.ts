@@ -1,26 +1,28 @@
 import { HttpService } from '@nestjs/axios';
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ViaCepIntegration } from 'src/integrations/viacep';
-import { Repository } from 'typeorm';
-import { DoctorEntity } from './doctor.entity';
-import { SaveDoctorDataDto, SaveDoctorBodyDto } from './dto/doctor.dto';
+import { UpdateResult } from 'typeorm';
+import { DoctorEntity } from '../entities/doctor.entity';
+import { SaveDoctorDataDto, UpdateDoctorDataDto } from '../dto/doctor.dto';
+import { DoctorsRepository } from '../repositories/DoctorRepository';
 
 @Injectable()
-export class CreateDoctorService {
+export class UpdateDoctorService {
   constructor(
     @InjectRepository(DoctorEntity)
-    private readonly doctorRepository: Repository<DoctorEntity>,
+    private readonly doctorRepository: DoctorsRepository,
     private httpService: HttpService,
   ) {}
 
-  async save(data: SaveDoctorBodyDto): Promise<DoctorEntity> {
-    const doctor = await this.doctorRepository.findOne({
-      where: { name: data.name, crm: data.crm },
-    });
+  async update(id: string, data: UpdateDoctorDataDto): Promise<UpdateResult> {
+    const doctor = await this.doctorRepository.findOne({ where: { id } });
 
-    if (doctor) {
-      throw new BadRequestException('Doctor is already registered');
+    if (!doctor) {
+      throw new NotFoundException('Doctor not found');
+    }
+    if (data.zipcode === undefined) {
+      return await this.doctorRepository.update({ id }, data);
     }
     const viaCepClient = new ViaCepIntegration(this.httpService);
     const zipCodeInfo = await viaCepClient.getAddressInfo(data.zipcode);
@@ -38,6 +40,7 @@ export class CreateDoctorService {
       state: zipCodeInfo.uf,
     };
 
-    return this.doctorRepository.save(this.doctorRepository.create(info));
+    const updatedDoctor = await this.doctorRepository.update({ id }, info);
+    return updatedDoctor.raw;
   }
 }
