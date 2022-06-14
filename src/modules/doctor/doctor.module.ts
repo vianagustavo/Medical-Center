@@ -10,9 +10,18 @@ import { DeleteDoctorService } from './services/delete-doctor.service';
 import { UpdateDoctorController } from './controllers/update-doctor.controller';
 import { DeleteDoctorController } from './controllers/delete-doctor.controller';
 import { CepModule } from '../cep/cep.module';
+import { DoctorSpecializationEntity } from './entities/specialization.entity';
+import { SpecializationsRepository } from './repositories/specialization.repository';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([DoctorEntity]), CepModule],
+  imports: [
+    TypeOrmModule.forFeature([
+      DoctorEntity,
+      DoctorSpecializationEntity,
+      SpecializationsRepository,
+    ]),
+    CepModule,
+  ],
   providers: [
     CreateDoctorService,
     UpdateDoctorService,

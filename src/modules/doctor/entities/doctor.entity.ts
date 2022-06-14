@@ -3,31 +3,18 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-
-export enum DoctorSpecialization {
-  ALERGOLOGIA = 'ALERGOLOGIA',
-  ANGIOLOGIA = 'ANGIOLOGIA',
-  BUCO_MAXILO = 'BUCO_MAXILO',
-  CARDIOLOGIA_CLÍNICA = 'CARDIOLOGIA_CLÍNICA',
-  CARDIOLOGIA_INFANTIL = 'CARDIOLOGIA_INFANTIL',
-  CIRURGIA_CABEÇA_PESCOÇO = 'CIRURGIA_CABEÇA_PESCOÇO',
-  CIRURGIA_CARDÍACA = 'CIRURGIA_CABEÇA_PESCOÇO',
-  CIRURGIA_TÓRAX = 'CIRURGIA_CABEÇA_PESCOÇO',
-}
-
-export interface IDoctorSpecialization {
-  specialization: DoctorSpecialization[];
-}
+import { DoctorSpecializationEntity } from './specialization.entity';
 
 @Entity({ name: 'doctors' })
 export class DoctorEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ nullable: false, unique: true })
+  @Column({ nullable: false })
   name: string;
 
   @Column({ nullable: false, unique: true })
@@ -41,13 +28,6 @@ export class DoctorEntity {
 
   @Column({ nullable: false })
   zipcode: number;
-
-  @Column({
-    name: 'medical_specialization',
-    nullable: false,
-    type: 'json',
-  })
-  medicalSpecialization: DoctorSpecialization[];
 
   @Column({ nullable: false })
   address: string;
@@ -63,6 +43,12 @@ export class DoctorEntity {
 
   @Column({ nullable: false })
   state: string;
+
+  @OneToMany(
+    () => DoctorSpecializationEntity,
+    (specialization) => specialization.doctor,
+  )
+  specializations: DoctorSpecializationEntity[];
 
   @CreateDateColumn({ name: 'created_at' })
   createdAt: string;
