@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { DoctorEntity } from './app/doctor/doctor.entity';
-import { DoctorModule } from './app/doctor/doctor.module';
+import { DoctorEntity } from '../doctor/entities/doctor.entity';
+import { DoctorModule } from '../doctor/doctor.module';
 import { HttpModule } from '@nestjs/axios';
 
 @Module({

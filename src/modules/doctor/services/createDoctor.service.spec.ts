@@ -1,9 +1,9 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { DoctorEntity, DoctorSpecialization } from './doctor.entity';
+import { DoctorEntity, DoctorSpecialization } from '../entities/doctor.entity';
+import { SaveDoctorBodyDto } from '../dto/doctor.dto';
 import { CreateDoctorService } from './createDoctor.service';
-import { SaveDoctorBodyDto } from './dto/doctor.dto';
 
 describe('MedicsService', () => {
   let createDoctorService: CreateDoctorService;
