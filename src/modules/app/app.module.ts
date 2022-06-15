@@ -5,6 +5,7 @@ import { DoctorModule } from '../doctor/doctor.module';
 import { HttpModule } from '@nestjs/axios';
 import { ConfigModule } from '@nestjs/config';
 import { CepModule } from '../cep/cep.module';
+import { DoctorSpecializationEntity } from '../doctor/entities/specialization.entity';
 
 @Module({
   imports: [
@@ -15,7 +16,7 @@ import { CepModule } from '../cep/cep.module';
       username: 'root',
       password: 'admin',
       database: 'medical-center',
-      entities: [DoctorEntity],
+      entities: [DoctorEntity, DoctorSpecializationEntity],
       synchronize: true,
     }),
     DoctorModule,

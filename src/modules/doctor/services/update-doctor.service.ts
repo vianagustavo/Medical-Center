@@ -1,11 +1,15 @@
-import { HttpService } from '@nestjs/axios';
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { UpdateResult } from 'typeorm';
+import { DataSource } from 'typeorm';
 import { DoctorEntity } from '../entities/doctor.entity';
-import { SaveDoctorDataDto, UpdateDoctorDataDto } from '../dto/doctor.dto';
-import { DoctorsRepository } from '../repositories/DoctorRepository';
+import { UpdateDoctorDataDto } from '../dto/doctor.dto';
+import { DoctorsRepository } from '../repositories/doctor.repository';
 import { CepIntegrationService } from 'src/modules/cep/services/cep.service';
+import { buildDoctorSpecialization } from '../utils/doctor';
 
 @Injectable()
 export class UpdateDoctorService {
@@ -13,33 +17,55 @@ export class UpdateDoctorService {
     @InjectRepository(DoctorEntity)
     private readonly doctorRepository: DoctorsRepository,
     private readonly cepService: CepIntegrationService,
+    private dataSource: DataSource,
   ) {}
 
-  async update(id: string, data: UpdateDoctorDataDto): Promise<UpdateResult> {
-    const doctor = await this.doctorRepository.findOne({ where: { id } });
+  async update(id: string, data: UpdateDoctorDataDto): Promise<DoctorEntity> {
+    const doctor = await this.doctorRepository.findOne({
+      where: { id },
+      relations: { specializations: true },
+    });
 
     if (!doctor) {
       throw new NotFoundException('Doctor not found');
     }
-    if (data.zipcode === undefined) {
-      return await this.doctorRepository.update({ id }, data);
+    if (data.crm !== undefined) {
+      const crmInUse = await this.doctorRepository.findOne({
+        where: { crm: data.crm },
+      });
+      if (crmInUse) {
+        throw new BadRequestException('CRM is already in use');
+      }
+      doctor.crm = data.crm;
     }
-    const zipCodeInfo = await this.cepService.getAddressInfo(data.zipcode);
-    const info: SaveDoctorDataDto = {
-      name: data.name,
-      crm: data.crm,
-      medicalSpecialization: data.medicalSpecialization,
-      landlineNumber: data.landlineNumber,
-      mobileNumber: data.mobileNumber,
-      zipcode: data.zipcode,
-      address: zipCodeInfo.logradouro,
-      complement: zipCodeInfo.complemento,
-      city: zipCodeInfo.localidade,
-      district: zipCodeInfo.bairro,
-      state: zipCodeInfo.uf,
-    };
+    if (data.zipcode !== undefined) {
+      const zipCodeInfo = await this.cepService.getAddressInfo(data.zipcode);
+      doctor.address = zipCodeInfo.logradouro;
+      doctor.city = zipCodeInfo.localidade;
+      doctor.complement = zipCodeInfo.complemento;
+      doctor.district = zipCodeInfo.bairro;
+      doctor.state = zipCodeInfo.uf;
+    }
 
-    const updatedDoctor = await this.doctorRepository.update({ id }, info);
-    return updatedDoctor.raw;
+    let oldSpecializations = [];
+    if (data.specializations !== undefined) {
+      oldSpecializations = doctor.specializations;
+      const doctorSpecializations = buildDoctorSpecialization(
+        data.specializations,
+      );
+      doctor.specializations = doctorSpecializations;
+    }
+
+    doctor.name = data.name;
+    doctor.landlineNumber = data.landlineNumber;
+    doctor.mobileNumber = data.mobileNumber;
+
+    const transaction = await this.dataSource.transaction(async (manager) => {
+      await manager.remove(oldSpecializations);
+      await manager.save(doctor.specializations);
+      const updatedDoctor = await manager.save(doctor);
+      return updatedDoctor;
+    });
+    return transaction;
   }
 }

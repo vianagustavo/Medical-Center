@@ -1,11 +1,5 @@
-import {
-  IsArray,
-  IsEnum,
-  IsNotEmpty,
-  IsOptional,
-  MaxLength,
-} from 'class-validator';
-import { DoctorSpecialization } from '../entities/doctor.entity';
+import { IsEnum, IsNotEmpty, IsOptional, MaxLength } from 'class-validator';
+import { DoctorSpecialization } from '../entities/specialization.entity';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 export class SaveDoctorDataDto {
@@ -16,7 +10,7 @@ export class SaveDoctorDataDto {
   crm: string;
 
   @ApiProperty()
-  medicalSpecialization: DoctorSpecialization[];
+  specializations: DoctorSpecialization[];
 
   @ApiProperty()
   landlineNumber: number;
@@ -61,7 +55,7 @@ export class UpdateDoctorDataDto {
   @IsOptional()
   @IsEnum(DoctorSpecialization, { each: true })
   @ApiPropertyOptional()
-  medicalSpecialization?: DoctorSpecialization[];
+  specializations?: DoctorSpecialization[];
 
   @ApiPropertyOptional()
   landlineNumber?: number;
@@ -91,7 +85,7 @@ export class SaveDoctorBodyDto {
   @IsEnum(DoctorSpecialization, { each: true })
   @IsNotEmpty()
   @ApiProperty()
-  medicalSpecialization: DoctorSpecialization[];
+  specializations: DoctorSpecialization[];
 
   @IsNotEmpty()
   @ApiProperty()
