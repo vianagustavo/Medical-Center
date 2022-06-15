@@ -1,8 +1,11 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { CreateDoctorController } from './createDoctor.controller';
-import { DoctorEntity, DoctorSpecialization } from '../entities/doctor.entity';
 import { SaveDoctorBodyDto } from '../dto/doctor.dto';
 import { CreateDoctorService } from '../services/createDoctor.service';
+import { DoctorSpecialization } from '../entities/specialization.entity';
+import { DoctorEntity } from '../entities/doctor.entity';
+
+const newDoctorEntity = new DoctorEntity();
 
 describe('DoctorsController', () => {
   let createDoctorController: CreateDoctorController;
@@ -15,7 +18,7 @@ describe('DoctorsController', () => {
         {
           provide: CreateDoctorService,
           useValue: {
-            save: jest.fn(),
+            save: jest.fn().mockResolvedValue(newDoctorEntity),
           },
         },
       ],
@@ -40,23 +43,12 @@ describe('DoctorsController', () => {
         crm: '123567',
         landlineNumber: 22881861,
         mobileNumber: 984034502,
-        medicalSpecialization: [
-          DoctorSpecialization.ALERGOLOGIA,
-          DoctorSpecialization.ANGIOLOGIA,
-        ],
+        specializations: [DoctorSpecialization.ALERGOLOGIA],
       };
-      const doctorEntityMock = {
-        ...body,
-      } as DoctorEntity;
-
-      jest
-        .spyOn(createDoctorService, 'save')
-        .mockResolvedValueOnce(doctorEntityMock);
 
       const result = await createDoctorController.save(body);
 
-      expect(result).toBeDefined();
-      expect(createDoctorService.save).toBeCalledTimes(1);
+      expect(result).toEqual(newDoctorEntity);
     });
   });
 });
