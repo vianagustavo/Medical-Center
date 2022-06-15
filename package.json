@@ -2,6 +2,7 @@
   "name": "medical-center",
   "version": "0.0.1",
   "engines": {
+    "npm": "8.10.0",
     "node": "16.15.0"
   },
   "description": "",
