@@ -6,7 +6,7 @@ A API também conta com uma integração externa com a API dos correios, onde pa
 
 # Sumário
 1. <a href="#Hosted-APP">Hosted APP</a>
-2. <a href="#Documentação-da-RoadDev">Documentação da RoadDev</a>
+2. <a href="#Documentação-Medical-Center">Documentação Medical Center</a>
 3. <a href="#Tecnologias-utilizadas">Tecnologias Utilizadas</a>
 4. <a href="#Configurando-o-Projeto">Configurando o Projeto</a>
 5. <a href="#Inicializando">Inicializando</a>
@@ -21,7 +21,7 @@ A API também conta com uma integração externa com a API dos correios, onde pa
 
 https://medical-center-api.herokuapp.com/
 
-## Documentação da RoadDev
+## Documentação Medical Center
 
 https://medical-center-api.herokuapp.com/api-docs/
 
