@@ -1,73 +1,101 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+# Medical Center
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+API feita para gerenciar redes de médicos.
+A API também conta com uma integração externa com a API dos correios, onde para criarmos um médico, precisamos encontrar os dados de endereço através do cep informado.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
 
-## Description
+# Sumário
+1. <a href="#Hosted-APP">Hosted APP</a>
+2. <a href="#Documentação-da-RoadDev">Documentação da RoadDev</a>
+3. <a href="#Tecnologias-utilizadas">Tecnologias Utilizadas</a>
+4. <a href="#Configurando-o-Projeto">Configurando o Projeto</a>
+5. <a href="#Inicializando">Inicializando</a>
+6. <a href="#Gerando-e-Rodando-Migrations-(TypeORM)">Gerando e Rodando Migrations (TypeORM)</a>
+7. <a href="#Rodando-Testes">Rodando Testes</a>
+8. <a href="#Deploy">Deploy</a>
+9. <a href="#CI/CD">CI/CD</a>
+10. <a href="#API-Endpoints">API Endpoints</a>
+11. <a href="#Autor">Autor</a>
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## Hosted APP
 
-## Installation
+https://roaddev-1.herokuapp.com/
 
-```bash
-$ npm install
+## Documentação da RoadDev
+
+https://roaddev-1.herokuapp.com/api-docs/
+
+## Tecnologias Utilizadas
+
+- [NodeJS](https://nodejs.org/)
+- [NestJS](https://nestjs.com/)
+- [Typescript](https://www.typescriptlang.org/)
+- [TypeORM](https://typeorm.io/)
+- [MySQL](https://www.mysql.com/)
+- [Jest](https://jestjs.io/)
+- [Supertest]()
+- [Axios](https://axios-http.com/ptbr/)
+
+## Configurando o Projeto
+
+Setar variáveis de ambiente de acordo
+ 
+|        Variável         |           Default            |                   Notes                    |
+| ----------------------- | ---------------------------- | ------------------------------------------ |
+|        `DB_HOST`        |         `localhost`          |               Host do Banco                |
+|        `DB_PORT`        |           `3306`             |         Porta de inicialização do Banco    |
+|      `MYSQL_USER`       |           `root`             |              Username do Banco             |
+|     `MYSQL_PASSWORD`    |           `admin`            |               Senha do Banco               |
+|         `PORT`          |           `3000`             |            Porta de inicialização          |
+|    `MYSQL_DATABASE`     |      `medical-center`        |           Nome do Banco de dados           |
+|      `VIACEP_URL`       | `https://viacep.com.br/ws/`  |             Secret - Token Usuário         |
+
+
+## Inicializando
+
+- Clonar o repositório: `git clone https://github.com/vianagustavo/Medical-Center.git`
+- Baixar dependências `npm install`
+
+
+## Gerando e Rodando Migrations (TypeORM)
+
+Para adicionar/alterar migrations no model execute:
+
+```
+# Gerando Migrations
+$ yarn typeorm -- migration:generate ./src/migrations/create-user
+# Rodando Migrations
+$ yarn typeorm -- migration:run
+
 ```
 
-## Running the app
+## Rodando Testes
 
-```bash
-# development
-$ npm run start
+Os testes unitários e de integração estão disponíveis para todos os endpoints da aplicação, e o script utilizado para o rodar o Jest pode ser encontrado no `package.json`.
 
-# watch mode
-$ npm run start:dev
+```
+# Rodando os testes
+$ yarn test
 
-# production mode
-$ npm run start:prod
 ```
 
-## Test
 
-```bash
-# unit tests
-$ npm run test
+## CI/CD
 
-# e2e tests
-$ npm run test:e2e
+Aproveitando a iniciativa de utilizar o deploy na plataforma do Heroku, também foram utilizados os conceitos de CI/CD, através do GitHub Actions, sempre que for feito um push ou pull-request para a branch main, adotando boas práticas de desenvolvimento e automação da implantação da nossa aplicação.
 
-# test coverage
-$ npm run test:cov
-```
+O workflow completo se encontra em: ``` .github/workflows/full-workflow.yml ```
 
-## Support
+## API Endpoints
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+|  Verbo   |                    Endpoint                     |                 Descrição                  | 
+| :------- | :---------------------------------------------: | :----------------------------------------: |
+| `POST`   |                  `/doctors`                     |          Criação de novo médico            |    
+| `GET`    |                  `/doctors`                     |            Listagem de médicos             |         
+| `PUT`    |                `/doctors/:id`                   |     Atualização informações de médicos     |     
+| `DELETE` |                `/doctors/:id`                   |         Deletar um cadastro de médico      |   
 
-## Stay in touch
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+## Autor
 
-## License
-
-Nest is [MIT licensed](LICENSE).
+- **Gustavo Ferreira Viana**

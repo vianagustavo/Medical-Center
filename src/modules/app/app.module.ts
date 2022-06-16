@@ -1,30 +1,31 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { DoctorEntity } from '../doctor/entities/doctor.entity';
 import { DoctorModule } from '../doctor/doctor.module';
 import { HttpModule } from '@nestjs/axios';
 import { ConfigModule } from '@nestjs/config';
 import { CepModule } from '../cep/cep.module';
-import { DoctorSpecializationEntity } from '../doctor/entities/specialization.entity';
+import { databaseConfig } from 'src/database/database.config';
 
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
     TypeOrmModule.forRoot({
       type: 'mysql',
-      host: 'localhost',
-      port: 3306,
-      username: 'root',
-      password: 'admin',
-      database: 'medical-center',
-      entities: [DoctorEntity, DoctorSpecializationEntity],
-      synchronize: true,
+      host: databaseConfig.host,
+      port: databaseConfig.port,
+      username: databaseConfig.username,
+      password: databaseConfig.password,
+      database: databaseConfig.database,
+      entities: databaseConfig.entities,
+      migrations: databaseConfig.migrations,
+      migrationsRun: databaseConfig.migrationsRun,
+      synchronize: databaseConfig.synchronize,
     }),
     DoctorModule,
     HttpModule,
     CepModule,
-    ConfigModule.forRoot({
-      isGlobal: true,
-    }),
   ],
   controllers: [],
   providers: [],
