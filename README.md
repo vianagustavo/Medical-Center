@@ -19,11 +19,11 @@ A API também conta com uma integração externa com a API dos correios, onde pa
 
 ## Hosted APP
 
-https://roaddev-1.herokuapp.com/
+https://medical-center-api.herokuapp.com/
 
 ## Documentação da RoadDev
 
-https://roaddev-1.herokuapp.com/api-docs/
+https://medical-center-api.herokuapp.com/api-docs/
 
 ## Tecnologias Utilizadas
 
@@ -33,7 +33,6 @@ https://roaddev-1.herokuapp.com/api-docs/
 - [TypeORM](https://typeorm.io/)
 - [MySQL](https://www.mysql.com/)
 - [Jest](https://jestjs.io/)
-- [Supertest]()
 - [Axios](https://axios-http.com/ptbr/)
 
 ## Configurando o Projeto
@@ -48,7 +47,7 @@ Setar variáveis de ambiente de acordo
 |     `MYSQL_PASSWORD`    |           `admin`            |               Senha do Banco               |
 |         `PORT`          |           `3000`             |            Porta de inicialização          |
 |    `MYSQL_DATABASE`     |      `medical-center`        |           Nome do Banco de dados           |
-|      `VIACEP_URL`       | `https://viacep.com.br/ws/`  |             Secret - Token Usuário         |
+|      `VIACEP_URL`       | `https://viacep.com.br/ws/`  |          URL base de para integração       |
 
 
 ## Inicializando
@@ -82,7 +81,7 @@ $ yarn test
 
 ## CI/CD
 
-Aproveitando a iniciativa de utilizar o deploy na plataforma do Heroku, também foram utilizados os conceitos de CI/CD, através do GitHub Actions, sempre que for feito um push ou pull-request para a branch main, adotando boas práticas de desenvolvimento e automação da implantação da nossa aplicação.
+Aproveitando a iniciativa de utilizar o deploy na plataforma do Heroku, também foram utilizados os conceitos de CI/CD, através do GitHub Actions, sempre que for feito um push ou pull-request para a branch master, adotando boas práticas de desenvolvimento e automação da implantação da nossa aplicação.
 
 O workflow completo se encontra em: ``` .github/workflows/full-workflow.yml ```
 
