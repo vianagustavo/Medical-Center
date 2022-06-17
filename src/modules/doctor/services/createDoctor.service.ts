@@ -6,7 +6,7 @@ import { DoctorsRepository } from '../repositories/doctor.repository';
 import {
   CepIntegrationService,
   IAddressInfo,
-} from 'src/modules/cep/services/cep.service';
+} from '../../cep/services/cep.service';
 import { DoctorSpecializationEntity } from '../entities/specialization.entity';
 import { DataSource } from 'typeorm';
 import { buildDoctorSpecialization } from '../utils/doctor';

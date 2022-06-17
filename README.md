@@ -55,6 +55,9 @@ Setar variáveis de ambiente de acordo
 - Clonar o repositório: `git clone https://github.com/vianagustavo/Medical-Center.git`
 - Baixar dependências `npm install`
 
+OBS: Há a alternativa de incializar a aplicação via Docker:
+- Buildar imagem da aplicação: `docker build -t medical-center .`
+- Subir a aplicação via docker-compose: `docker-compose up -d`
 
 ## Gerando e Rodando Migrations (TypeORM)
 
@@ -62,9 +65,9 @@ Para adicionar/alterar migrations no model execute:
 
 ```
 # Gerando Migrations
-$ yarn typeorm -- migration:generate ./src/migrations/create-user
+$ npm run typeorm -- migration:generate ./src/migrations/create-user
 # Rodando Migrations
-$ yarn typeorm -- migration:run
+$ npm run typeorm -- migration:run
 
 ```
 
@@ -72,9 +75,17 @@ $ yarn typeorm -- migration:run
 
 Os testes unitários e de integração estão disponíveis para todos os endpoints da aplicação, e o script utilizado para o rodar o Jest pode ser encontrado no `package.json`.
 
+# Testes Unitários
+
 ```
-# Rodando os testes
-$ yarn test
+$ npm run test
+
+```
+
+# Testes e2e
+
+```
+npm run test:e2e
 
 ```
 

@@ -8,7 +8,7 @@ import { DataSource } from 'typeorm';
 import { DoctorEntity } from '../entities/doctor.entity';
 import { UpdateDoctorDataDto } from '../dto/doctor.dto';
 import { DoctorsRepository } from '../repositories/doctor.repository';
-import { CepIntegrationService } from 'src/modules/cep/services/cep.service';
+import { CepIntegrationService } from '../../cep/services/cep.service';
 import { buildDoctorSpecialization } from '../utils/doctor';
 
 @Injectable()

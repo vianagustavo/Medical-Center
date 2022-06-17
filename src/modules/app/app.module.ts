@@ -4,7 +4,7 @@ import { DoctorModule } from '../doctor/doctor.module';
 import { HttpModule } from '@nestjs/axios';
 import { ConfigModule } from '@nestjs/config';
 import { CepModule } from '../cep/cep.module';
-import { databaseConfig } from 'src/database/database.config';
+import { databaseConfig } from '../../database/database.config';
 
 @Module({
   imports: [
